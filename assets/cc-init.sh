@@ -52,10 +52,9 @@ function put_public_key() {
 function config_mysql () {
   echo $MYSQL_ROOT_PASSWORD > /root/mysqlpass
 
-#  mysql -u root -p${MYSQL_ROOT_PASSWORD} -h mysql -e "CREATE DATABASE webmail"
-#  mysql -u root -p${MYSQL_ROOT_PASSWORD} -h mysql -e "GRANT ALL PRIVILEGES ON webmail.* TO webmail@'%' IDENTIFIED BY 'ClassCatWebmail'";
-
-#  mysql -u root -p${MYSQL_ROOT_PASSWORD} -h mysql webmail < /usr/local/roundcubemail-1.1.1/SQL/mysql.initial.sql
+  mysql -u root -p${MYSQL_ROOT_PASSWORD} -h mysql -e "CREATE DATABASE owncloud"
+  mysql -u root -p${MYSQL_ROOT_PASSWORD} -h mysql -e "CREATE USER 'owncloud'@'%' IDENTIFIED BY 'ClassCatCloud';"
+  mysql -u root -p${MYSQL_ROOT_PASSWORD} -h mysql -e "GRANT ALL ON owncloud.* TO 'owncloud'@'%'"
 }
 
 
