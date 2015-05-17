@@ -51,16 +51,30 @@ function put_public_key() {
 
 function config_mysql () {
   echo $MYSQL_ROOT_PASSWORD > /root/mysqlpass
+  echo $MYSQL_OC_DBNAME >> /root/mysqlpass
+  echo $MYSQL_OC_USERNAME >> /root/mysqlpass
+  echo $MYSQL_OC_PASSWORD >> /root/mysqlpass
 
-  mysql -u root -p${MYSQL_ROOT_PASSWORD} -h mysql -e "CREATE DATABASE owncloud"
-  mysql -u root -p${MYSQL_ROOT_PASSWORD} -h mysql -e "CREATE USER 'owncloud'@'%' IDENTIFIED BY 'ClassCatCloud';"
-  mysql -u root -p${MYSQL_ROOT_PASSWORD} -h mysql -e "GRANT ALL ON owncloud.* TO 'owncloud'@'%'"
+
+
+  mysql -u root -p${MYSQL_ROOT_PASSWORD} -h mysql -e "CREATE DATABASE ${MYSQL_OC_DBNAME}"
+  mysql -u root -p${MYSQL_ROOT_PASSWORD} -h mysql -e "CREATE USER '${MYSQL_OC_USERNAME}'@'%' IDENTIFIED BY '${MYSQL_OC_PASSWORD}';"
+  mysql -u root -p${MYSQL_ROOT_PASSWORD} -h mysql -e "GRANT ALL ON ${MYSQL_OC_DBNAME}.* TO '${MYSQL_OC_USERNAME}'@'%'"
+
+  #mysql -u root -p${MYSQL_ROOT_PASSWORD} -h mysql -e "CREATE DATABASE owncloud"
+  #mysql -u root -p${MYSQL_ROOT_PASSWORD} -h mysql -e "CREATE USER 'owncloud'@'%' IDENTIFIED BY 'ClassCatCloud';"
+  #mysql -u root -p${MYSQL_ROOT_PASSWORD} -h mysql -e "GRANT ALL ON owncloud.* TO 'owncloud'@'%'"
 }
 
 
 ################
 ### OwnCloud ###
 ################
+
+function config_owncloud () {
+  mkdir -p ${OC_DATA_PATH}
+  chown -R www-data.www-data ${OC_DATA_PATH}
+}
 
 
 ##################
@@ -92,7 +106,7 @@ init
 change_root_password
 put_public_key
 config_mysql
-
+config_owncloud
 proc_supervisor
 
 exit 0
