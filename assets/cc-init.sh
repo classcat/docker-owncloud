@@ -6,6 +6,7 @@
 ########################################################################
 
 #--- HISTORY -----------------------------------------------------------
+# 17-may-15 : fixed.
 #-----------------------------------------------------------------------
 
 
@@ -50,20 +51,9 @@ function put_public_key() {
 #############
 
 function config_mysql () {
-  echo $MYSQL_ROOT_PASSWORD > /root/mysqlpass
-  echo $MYSQL_OC_DBNAME >> /root/mysqlpass
-  echo $MYSQL_OC_USERNAME >> /root/mysqlpass
-  echo $MYSQL_OC_PASSWORD >> /root/mysqlpass
-
-
-
   mysql -u root -p${MYSQL_ROOT_PASSWORD} -h mysql -e "CREATE DATABASE ${MYSQL_OC_DBNAME}"
   mysql -u root -p${MYSQL_ROOT_PASSWORD} -h mysql -e "CREATE USER '${MYSQL_OC_USERNAME}'@'%' IDENTIFIED BY '${MYSQL_OC_PASSWORD}';"
   mysql -u root -p${MYSQL_ROOT_PASSWORD} -h mysql -e "GRANT ALL ON ${MYSQL_OC_DBNAME}.* TO '${MYSQL_OC_USERNAME}'@'%'"
-
-  #mysql -u root -p${MYSQL_ROOT_PASSWORD} -h mysql -e "CREATE DATABASE owncloud"
-  #mysql -u root -p${MYSQL_ROOT_PASSWORD} -h mysql -e "CREATE USER 'owncloud'@'%' IDENTIFIED BY 'ClassCatCloud';"
-  #mysql -u root -p${MYSQL_ROOT_PASSWORD} -h mysql -e "GRANT ALL ON owncloud.* TO 'owncloud'@'%'"
 }
 
 
@@ -83,10 +73,6 @@ function config_owncloud () {
 # See http://docs.docker.com/articles/using_supervisord/
 
 function proc_supervisor () {
-# removed the followings:
-#[supervisord]
-#nodaemon=true
-
   cat > /etc/supervisor/conf.d/supervisord.conf <<EOF
 [program:ssh]
 command=/usr/sbin/sshd -D
