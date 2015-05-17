@@ -7,6 +7,7 @@ MAINTAINER ClassCat Co.,Ltd. <support@classcat.com>
 ########################################################################
 
 #--- HISTORY -----------------------------------------------------------
+# 17-may-15 : php.ini.
 # 16-may-15 : owncloud.
 #-----------------------------------------------------------------------
 
@@ -22,11 +23,12 @@ RUN apt-get update && apt-get install -y bzip2 \
   && chown -R www-data.www-data /var/www/html/config \
   && chown -R www-data.www-data /var/www/html/apps \
   && a2enmod ssl \
-  && a2ensite default-ssl
+  && a2ensite default-ssl \
+  && sed -i.bak2 -e "s/^;always_populate_raw_post_data =.*$/always_populate_raw_post_data = -1/" /etc/php5/apache2/php.ini
 
 WORKDIR /opt
 COPY assets/cc-init.sh /opt/cc-init.sh
 
-EXPOSE 22 443
+EXPOSE 22 80 443
 
 CMD /opt/cc-init.sh; /usr/bin/supervisord -c /etc/supervisor/supervisord.conf
