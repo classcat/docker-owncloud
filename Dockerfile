@@ -7,12 +7,10 @@ MAINTAINER ClassCat Co.,Ltd. <support@classcat.com>
 ########################################################################
 
 #--- HISTORY -----------------------------------------------------------
+# 17-may-15 : fixed.
 # 17-may-15 : php.ini.
 # 16-may-15 : owncloud.
 #-----------------------------------------------------------------------
-
-
-#RUN apt-get update && apt-get install -y mysql-client
 
 WORKDIR /usr/local
 RUN apt-get update && apt-get install -y bzip2 \
